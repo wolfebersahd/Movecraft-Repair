@@ -168,7 +168,7 @@ public class RepairSign implements Listener {
                 front[i] = sign.getSide(org.bukkit.block.sign.Side.FRONT).line(i);
                 back[i] = sign.getSide(org.bukkit.block.sign.Side.BACK).line(i);
             }
-            protoRepair.addTask(new net.countercraft.movecraft.repair.tasks.SignRepair(sign.getLocation(), front, back));
+            protoRepair.getQueue().add(new net.countercraft.movecraft.repair.tasks.SignRepair(sign.getLocation(), front, back));
         } catch (RepairState.ProtoRepairCancelledException e) {
             player.sendMessage(e.getFailMessage());
             return;
