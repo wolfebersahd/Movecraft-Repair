@@ -147,6 +147,14 @@ public class RepairSign implements Listener {
     private void createProtoRepair(@NotNull Sign sign, UUID uuid, Player player, PlayerCraft craft) {
         String stateName = ChatColor.stripColor(sign.getLine(1));
 
+        // Capture both sides of any kind of sign (standing, wall, hanging)
+        Component[] front = new Component[4];
+        Component[] back = new Component[4];
+        for (int i = 0; i < 4; i++) {
+            front[i] = sign.getSide(org.bukkit.block.sign.Side.FRONT).line(i);
+            back[i] = sign.getSide(org.bukkit.block.sign.Side.BACK).line(i);
+        }
+
         // Get the repair state from file
         RepairState state;
         try {
@@ -155,6 +163,11 @@ public class RepairSign implements Listener {
             player.sendMessage(I18nSupport.getInternationalisedComponent("Repair - State not found"));
             return;
         }
+
+        // After we have a valid state, wrap sign text into the proto repair
+        state.addExtraTask(new net.countercraft.movecraft.repair.tasks.SignRepair(
+            sign.getLocation(), front, back
+        ));
 
         // Convert to a proto repair
         ProtoRepair protoRepair;
