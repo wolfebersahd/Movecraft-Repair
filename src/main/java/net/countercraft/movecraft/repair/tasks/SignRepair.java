@@ -37,7 +37,7 @@ public class SignRepair extends RepairTask {
                 sign.getSide(Side.BACK).line(i, backLines[i]);
             }
         }
-        sign.update(false, false);
+        sign.update(true, false);
         done = true;
     }
 
